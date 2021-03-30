@@ -1,0 +1,12 @@
+factory with tinker gives error in laravel 8, such as: 
+
+>>> factory(App\Cls\ClassName,5)000)->create()
+PHP Fatal error:  Call to undefined function factory() in Psy Shell code on line 1
+(this error is due to changes in laravel 8, this method will not work now)
+
+or
+>>> ClassName::factory()->count(1000)->create()
+PHP Error:  Class "ClassName" not found in /Users/username/Local Siteseval()'d code on line 1
+
+The errors are due to incomplete path in classname, add complete path like: 
+>>> App\Models\ClassName::factory()->count(1000)->create()
