@@ -1,0 +1,20 @@
+works in laravel 8
+
+php artisan make:migration ClassName
+
+then add in definitions like this:
+
+    public function definition()
+    {
+        return [
+            'first'    => rand(1,50),
+            'second'     => rand(1,50),
+            'status'        => 'open',
+            'created_at'    => now(),
+        ];
+    }
+
+then run
+
+php artisan migrate:refresh
+
