@@ -1,0 +1,9 @@
+outside class:
+use Illuminate\Support\Facades\DB;
+
+inside method:
+
+DB::enableQueryLog();
+$product = Product::get();
+$query = DB::getQueryLog();
+dd($query);
