@@ -6,3 +6,12 @@ note that app directory starts with small a, but we will call it App with capita
 3. goto the agora library files and add namespace on top of two files:
 
 namespace App\ThirdParty\agora\agora_token;
+use DateTime; // for AccessToken or any other file that uses it
+use DateTimeZone; // for AccessToken or any other file that uses it
+
+
+files are:
+AccessToken.php
+RtcTokenBuilder.php
+
+or any other that you will use too.
