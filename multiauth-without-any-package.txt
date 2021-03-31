@@ -1,0 +1,108 @@
+We can make a multi auth system in laravel 8 without using any package using these steps.
+
+1. make a new Authenticatable model and copy user.php model into it
+Simply copy the contents of user.php into your new model file and call it Admin.php, rename the class name to this new user type admin too
+Make sure that the new model is not an extension of Model, rather it's extension of Authenticatable
+
+The new model will look like this:
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class Admin extends Authenticatable
+{
+    use HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+}
+
+2. Modify the config/auth.php file at two places, guards and providers, the variables would look like this now:
+
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+        'admins'  => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+    ],
+    
+    
+    
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+        'admins'  => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Admin::class,
+        ],
+    ],
+
+3. Authenticate the user using the following method in your controller:
+
+    public function authenticate(Request $request){
+
+        //Validate requests
+        $request->validate([
+            'email'=>'required|email',
+            'password'=>'required|min:6',
+            ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended(Route('admin'));
+            return "perfect";
+        }else{
+            return "not perfect";
+        }
+
+        return back()->with('fail', 'The email or password is incorrect.');
+
+    }
