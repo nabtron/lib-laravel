@@ -1,5 +1,9 @@
 We can make a multi auth system in laravel 8 without using any package using these steps.
 
+Don't forget to clear the cache with this command when you make any changes to auth.php file:
+php artisan config:clear
+php artisan config:cache
+
 1. make a new Authenticatable model and copy user.php model into it
 Simply copy the contents of user.php into your new model file and call it Admin.php, rename the class name to this new user type admin too
 Make sure that the new model is not an extension of Model, rather it's extension of Authenticatable
@@ -106,3 +110,16 @@ class Admin extends Authenticatable
         return back()->with('fail', 'The email or password is incorrect.');
 
     }
+    
+4. to get the user credentials in your code, don't use these:
+Auth::user() or Auth::admin()
+
+instead use this:
+
+        return Auth::guard('admin')->user();
+
+Following these steps will hopefully solve the issues and errors like:
+
+Method Illuminate\Auth\SessionGuard::admin does not exist.
+Auth guard [admin] is not defined
+Auth driver [] for guard [] is not defined
