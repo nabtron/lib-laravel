@@ -1,4 +1,4 @@
-We can make a multi auth system in laravel 8 without using any package using these steps.
+We can make a multi auth system in laravel 8 without using any package using these steps. We can use any custom table and name for this.
 
 Don't forget to clear the cache with this command when you make any changes to auth.php file:
 php artisan config:clear
