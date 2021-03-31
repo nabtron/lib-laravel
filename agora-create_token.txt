@@ -1,0 +1,8 @@
+1. we can't add the library to vendor directory, as namespace didn't work for me (as of now)
+
+2. create a new directory in app folder, call it vendor or ThirdParty etc. Note that naming it 3rd party won't work, don't start foldername with a number, and copy the agora files in it.
+note that app directory starts with small a, but we will call it App with capital A in namespace
+
+3. goto the agora library files and add namespace on top of two files:
+
+namespace App\ThirdParty\agora\agora_token;
