@@ -1,3 +1,5 @@
+<?php
+    // add this function into your laravel class 
     public function save(Request $request) {
 
         $month = date('m');
